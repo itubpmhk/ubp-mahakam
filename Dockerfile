@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # ---------- 3. Runtime ----------
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 RUN docker-php-ext-install pdo_mysql opcache \
  && a2enmod rewrite headers \
