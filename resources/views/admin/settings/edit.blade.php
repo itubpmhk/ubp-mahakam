@@ -10,7 +10,7 @@
     <a href="#hero">Hero</a><a href="#video">Video</a><a href="#tentang">Tentang & Angka</a><a href="#halaman-tentang">Halaman Tentang</a><a href="#judul">Judul Bagian</a><a href="#kontak">Kontak & Sosial</a>
   </nav>
 
-  <form method="post" action="{{ route('admin.settings.update') }}" class="stack">
+  <form method="post" action="{{ route('admin.settings.update') }}" class="stack" enctype="multipart/form-data">
     @csrf @method('PUT')
 
     <section class="panel" id="hero">
@@ -34,6 +34,21 @@
       <div class="grid-2">
         @include('admin.partials.field', $f('video_label', 'Label kecil'))
         @include('admin.partials.field', $f('video_title', 'Judul video'))
+      </div>
+      <div class="field">
+        <label>Gambar sampul video (opsional)</label>
+        <div class="cover-prev" data-preview="vcover" style="max-width:420px">
+          @if (!empty($s['video_cover']))
+            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($s['video_cover']) }}" alt="">
+          @else
+            <span class="muted">Memakai thumbnail dari YouTube</span>
+          @endif
+        </div>
+        <input type="file" name="video_cover_file" accept="image/jpeg,image/png,image/webp" data-preview-input="vcover">
+        <small>Disarankan screenshot HD dari video, ukuran 1920×1080 (JPG/PNG/WEBP, maks. 5 MB). Kosongkan untuk memakai thumbnail YouTube.</small>
+        @if (!empty($s['video_cover']))
+          <label class="check danger"><input type="checkbox" name="remove_video_cover" value="1"> Hapus gambar sampul (kembali ke thumbnail YouTube)</label>
+        @endif
       </div>
     </section>
 

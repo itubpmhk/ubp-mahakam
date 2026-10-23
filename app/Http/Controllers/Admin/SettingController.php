@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Support\Uploads;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -30,8 +31,11 @@ class SettingController extends Controller
             $rules[$long] = ['nullable', 'string', 'max:20000'];
         }
 
+        $rules['video_cover_file'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'];
+
         $data = $request->validate($rules, [
             'url' => 'Kolom ini harus berupa alamat lengkap yang diawali https://',
+            'video_cover_file.max' => 'Gambar sampul video maksimal 5 MB.',
         ]);
 
         // keep empty fields as empty strings so they can be cleared on purpose
@@ -39,6 +43,14 @@ class SettingController extends Controller
         foreach ($keys as $key) {
             $values[$key] = $data[$key] ?? '';
         }
+        // own cover picture for the video (YouTube only offers a small one for some videos)
+        $cover = Setting::get('video_cover');
+        if ($request->boolean('remove_video_cover')) {
+            Uploads::delete($cover);
+            $cover = null;
+        }
+        $values['video_cover'] = Uploads::replace($request->file('video_cover_file'), $cover, 'site') ?? '';
+
         Setting::putMany($values);
 
         return back()->with('success', 'Konten landing page tersimpan.');
