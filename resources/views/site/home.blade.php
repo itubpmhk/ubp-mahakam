@@ -14,8 +14,10 @@
 
     @if ($videoId)
       <div class="video fx" id="video" data-id="{{ $videoId }}">
+        {{-- maxres doesn't exist for every video: YouTube then sends a small grey placeholder (120px wide) instead of an error --}}
         <img src="https://i.ytimg.com/vi/{{ $videoId }}/maxresdefault.jpg" alt="{{ $site['video_title'] }}"
-             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{ $videoId }}/hqdefault.jpg'">
+             onload="if(this.naturalWidth<=120&&!this.dataset.fb){this.dataset.fb=1;this.src='https://i.ytimg.com/vi/{{ $videoId }}/hqdefault.jpg'}"
+             onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://i.ytimg.com/vi/{{ $videoId }}/hqdefault.jpg'}">
         <button class="play" type="button" aria-label="Putar video"><svg width="30" height="30" viewBox="0 0 24 24" fill="#0f1b26"><path d="M8 5v14l11-7z"/></svg></button>
         <div class="v-meta"><span>{{ $site['video_label'] }}</span><b>{{ $site['video_title'] }}</b></div>
         <a class="yt-out" href="https://www.youtube.com/watch?v={{ $videoId }}" target="_blank" rel="noopener">Buka di YouTube ↗</a>
