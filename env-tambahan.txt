@@ -1,0 +1,20 @@
+# Salin/sesuaikan baris-baris ini ke file .env proyek Laravel Anda.
+
+APP_NAME="UBP Mahakam"
+APP_URL=http://localhost:8000
+APP_LOCALE=id
+APP_FALLBACK_LOCALE=en
+APP_FAKER_LOCALE=id_ID
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ubp_mahakam
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Akun admin pertama (dibuat saat "php artisan migrate --seed").
+# Setelah login pertama, ganti password dari menu Akun & Admin.
+ADMIN_NAME="Administrator"
+ADMIN_EMAIL=admin@ubpmahakam.local
+ADMIN_PASSWORD=GantiPassword123!
